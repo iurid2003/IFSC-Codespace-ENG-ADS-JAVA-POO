@@ -1,34 +1,79 @@
+import java.util.Scanner;
+
 public class E6OperacoesMatematicas {
     public static void main(String[] args) {
-        double raio = 5.0;
-        double base = 2.0;
-        double expoente = 3.0;
- 
- 
-        System.out.println("Área do círculo: " + (2 * Math.PI * raio));
-        //limitando o tamanho do valor
-        System.out.println("\nÁrea do círculo: " + String.format("%.5f", 2 * Math.PI * raio)); //Usando String.format():
-        System.out.printf("Área do círculo: %.5f\n", 2 * Math.PI * raio); //Usando o %5 do System.out.printf():
-        //outras metodos do math
-        System.out.println("Base elevada ao expoente: " + Math.pow(base, expoente));
-        System.out.println("Seno de 45 graus: " + Math.sin(Math.toRadians(45)));
-        System.out.println("Raiz quadrada de 2: " + Math.sqrt(2));
-        System.out.println("Log natural de 10: " + Math.log(10));
-        System.out.println("Log base 10 de 100: " + Math.log10(100));
-        System.out.println("Arredondamento para cima de 3.1: " + Math.ceil(3.1));
-        System.out.println("Parte inteira de 3.9: " + Math.floor(3.9));
- 
- 
-        // Tipos numéricos
-        short s = 10;
-        int i = -1000;
-        long l = 100000L;
-        float f = 230.47f;
-        double d = 200.374;
- 
- 
-        System.out.println("Valor absoluto de " + i + ": " + Math.abs(i));
-        System.out.println("Exponenciação de " + d + " ao quadrado: " + Math.pow(d, 2));
+        System.out.println("--- Vamos Jogar o Jogo da Forca ---");
+        String palavra;
+        Scanner scanf = new Scanner(System.in);
+        char letra;
+        int pos_letra;
+        String[] dicas = new String[3]; // Corrigido para 3 dicas
+        int num_dicas = 2;
+        // Solicita a palavra e as dicas
+        System.out.print("Digite a palavra que o próximo jogador tem que achar: ");
+        palavra = scanf.nextLine();
+
+        System.out.print("Digite a dica 1 para o seu companheiro: ");
+        dicas[0] = scanf.nextLine();
+
+        System.out.print("Digite a dica 2 para o seu companheiro: ");
+        dicas[1] = scanf.nextLine();
+
+        System.out.print("Digite a dica 3 para o seu companheiro: ");
+        dicas[2] = scanf.nextLine();
+
+        int tamanho_palavra = palavra.length();
+        char[] nova_palavra = new char[tamanho_palavra]; // Corrigido para char
+        for (int j = 0; j < tamanho_palavra; j++) {
+            nova_palavra[j] = '_'; // Inicializa com '_'
+        }
+
+        int tentativas = 6; // Número de tentativas
+        boolean acertou = false;
+
+        while (tentativas > 0 && !acertou) {
+            System.out.println("Palavra: " + String.valueOf(nova_palavra));
+            System.out.println("Tentativas restantes: " + tentativas);
+            System.out.print("Digite uma letra: ");
+            letra = scanf.next().charAt(0);
+
+            if (palavra.indexOf(letra) != -1) {
+                // Atualiza a nova_palavra com a letra correta
+                for (int i = 0; i < tamanho_palavra; i++) {
+                    if (palavra.charAt(i) == letra) {
+                        nova_palavra[i] = letra;
+                    }
+                }
+                System.out.println("A palavra tem a letra que você digitou.");
+            } else {
+                tentativas--;
+                System.out.println("A letra não está na palavra.");
+                if(num_dicas != -1 ){
+                 System.out.println("Dica : " + dicas[num_dicas]);
+                 num_dicas--;
+                }else{
+                   System.out.println("Nao tem mais dicas");
+                }
+                
+            }
+
+            // Verifica se a palavra foi completamente descoberta
+            acertou = String.valueOf(nova_palavra).equals(palavra);
+        }
+
+        if (acertou) {
+            System.out.println("Parabéns! Você adivinhou a palavra: " + palavra);
+        } else {
+            System.out.println("Você perdeu! A palavra era: " + palavra);
+        }
+
+        // Exibe as dicas
+        System.out.println("Dicas:");
+        for (String dica : dicas) {
+            System.out.println("- " + dica);
+        }
+
+        // Fecha o scanner
+        scanf.close();
     }
- }
- 
+}
